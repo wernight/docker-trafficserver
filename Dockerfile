@@ -27,7 +27,7 @@ RUN set -x \
  && mkdir /tmp/trafficserver \
  && cd /tmp/trafficserver \
  && curl -L http://www-eu.apache.org/dist/trafficserver/trafficserver-7.0.0.tar.bz2 | tar -xj --strip-components 1 \
- && ./configure --prefix=/opt/trafficserver \
+ && ./configure \
  && make install \
  && cd / \
     # Install dumb-init
@@ -48,12 +48,7 @@ RUN set -x \
  && apt-get clean \
  && rm -rf /tmp/* /var/lib/apt/lists/*
 
-#COPY trafficserver /etc/trafficserver
-
-#RUN mv /opt/trafficserver/etc/trafficserver /etc/trafficserver
-#RUN ln -sf /etc/trafficserver /opt/trafficserver/etc/trafficserver
-
 EXPOSE 8080
 
 ENTRYPOINT ["dumb-init"]
-CMD ["/opt/trafficserver/bin/traffic_server"]
+CMD ["traffic_cop", "--stdout"]
